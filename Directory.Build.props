@@ -1,0 +1,26 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <PackageId>Linkoid.Build.$(MSBuildProjectName)</PackageId>
+    <Authors>linkoid</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/linkoid/Build.Sdks</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <DevelopmentDependency>true</DevelopmentDependency>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildProjectDirectory)/../README.md" Pack="true" PackagePath="/" />
+    <Content Include="$(MSBuildProjectDirectory)/Build/**" Pack="true" PackagePath="build/%(RecursiveDir)" />
+    <Content Include="$(MSBuildProjectDirectory)/Sdk/**" Pack="true" PackagePath="sdk/%(RecursiveDir)" />
+  </ItemGroup>
+  
+</Project>

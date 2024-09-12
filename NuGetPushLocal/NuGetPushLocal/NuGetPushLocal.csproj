@@ -3,15 +3,8 @@
   <Import Project="Build/Linkoid.Build.NuGetPushLocal.props" />
   
   <PropertyGroup>
-    <PackageId>Linkoid.Build.NuGetPushLocal</PackageId>
-    <TargetFramework>net472</TargetFramework>
-    <DevelopmentDependency>true</DevelopmentDependency>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Build/**" Pack="true" PackagePath="build/" />
-  </ItemGroup>
   
   <Import Project="Build/Linkoid.Build.NuGetPushLocal.targets" />
   

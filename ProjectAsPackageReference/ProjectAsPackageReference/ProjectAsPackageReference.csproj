@@ -1,25 +1,14 @@
 ﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.56">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <AssemblyName>Linkoid.Build.ProjectAsPackageReference</AssemblyName>
     <RootNamespace>Linkoid.Build.ProjectAsPackageReference</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
     <PackageType>MSBuildSdk</PackageType>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Linkoid.Build.NuGetPushLocal" Version="1.0.0" PrivateAssets="all" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="Build/**" Pack="true" PackagePath="build/" />
-    <Content Include="Sdk/**" Pack="true" PackagePath="sdk/" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Build/" />
   </ItemGroup>
 
 </Project>
