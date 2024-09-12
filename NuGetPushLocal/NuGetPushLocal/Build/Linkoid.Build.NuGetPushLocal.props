@@ -1,0 +1,9 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <NuGetPushLocalFeed>$(NuGetPackageRoot)</NuGetPushLocalFeed>
+    <NuGetPushLocalOnPack>true</NuGetPushLocalOnPack>
+    <NuGetDeleteLocalOnClean></NuGetDeleteLocalOnClean>
+  </PropertyGroup>
+  
+</Project>

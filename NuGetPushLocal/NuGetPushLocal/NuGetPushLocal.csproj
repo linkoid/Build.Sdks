@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.56">
+
+  <Import Project="Build/Linkoid.Build.NuGetPushLocal.props" />
+  
+  <PropertyGroup>
+    <PackageId>Linkoid.Build.NuGetPushLocal</PackageId>
+    <TargetFramework>net472</TargetFramework>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Build/**" Pack="true" PackagePath="build/" />
+  </ItemGroup>
+  
+  <Import Project="Build/Linkoid.Build.NuGetPushLocal.targets" />
+  
+</Project>

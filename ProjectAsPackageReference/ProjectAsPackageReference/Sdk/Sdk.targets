@@ -1,0 +1,91 @@
+﻿<Project>
+
+  <Target Name="CollectProjectAsPackageReferences"
+          Outputs="@(PackageReference)"
+          BeforeTargets="CollectPackageReferences"
+          DependsOnTargets="_CollectPapReferences;_CopyPapNupkgsToRestorePath;_GeneratePapFiles">
+    <ItemGroup>
+      <_PapPackageReference Include="@(_PapReference->Metadata('PackageId'))" Version="%(_PapReference.PackageVersion)" KeepDuplicates="false" />
+      <_PapPackageReference Remove="@(PackageReference)" />
+      <PackageReference Include="@(_PapPackageReference)" KeepDuplicates="false" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CollectPapReferences"
+          Returns="@(_PapReference)">
+
+    <PropertyGroup>
+      <_CollectPapPackItemsProperties>
+        Configuration=$(Configuration);
+        DisableFastUpToDateCheck=false;
+        ContinuePackingAfterGeneratingNuspec=true;
+        CustomAfterMicrosoftCommonCrossTargetingTargets=$(MSBuildThisFileDirectory)ProjectAsPackageReference.AfterCommon.targets;
+        CustomAfterMicrosoftCommonTargets=$(MSBuildThisFileDirectory)ProjectAsPackageReference.AfterCommon.targets;
+      </_CollectPapPackItemsProperties>
+    </PropertyGroup>
+    
+    <MSBuild Projects="@(ProjectAsPackageReference)"
+             Targets="GenerateNuspec;_GetPapReferenceWithPackageInfo"
+             BuildInParallel="$(RestoreBuildInParallel)"
+             Properties="$(_CollectPapPackItemsProperties)">
+      <Output TaskParameter="TargetOutputs" ItemName="_PapReference" />
+    </MSBuild>
+    
+    <Message Text="Collected _PapReferences: @(_PapReference->'%(PackageId)', '; ')" Importance="high" />
+  </Target>
+  
+  <Target Name="_CopyPapNupkgsToRestorePath"
+          Inputs="@(_PapReference->'%(NupkgFullPath)')"
+          Outputs="@(_PapReference->'$(_PapRestorePath)%(RelativeSourcePath)%(NupkgFilename)%(NupkgExtension)')"
+          DependsOnTargets="_CollectPapReferences"
+          BeforeTargets="CollectPackageReferences">
+
+    <Message Text="_CopyPapNupkgsToRestorePath Outputs:&#xD;&#xA;&#x9;@(_PapReference->'$(_PapRestorePath)%(RelativeSourcePath)%(NupkgFilename)%(NupkgExtension)', '&#xD;&#xA;&#x9;')" Importance="high" />
+
+
+    <Exec Command="nuget delete %(_PapReference.PackageId) %(_PapReference.PackageVersion) -Source $(_PapRestorePath) -NonInteractive" ContinueOnError="true" />
+    <Exec Command="nuget add %(_PapReference.NupkgFullPath) -Source $(_PapRestorePath) -Expand -NonInteractive" />
+
+    <!--
+    <MakeDir Directories="$(_PapRestorePath)" Condition="!Exists($(_PapRestorePath))" />
+    <RemoveDir Directories="$(_PackageDestinationFolder)" ContinueOnError="true" />
+    <MakeDir Directories="$(_PapRestorePath)/%(_PapNupkg.RelativeSourcePath)" />
+    <Unzip SourceFiles="%(_PapNupkg)" DestinationFolder="$(_PapRestorePath)/%(_PapNupkg.RelativeSourcePath)" />
+    -->
+
+    <!--
+    <ItemGroup>
+      <_NuGetAddOutput Include="$(_PapRestorePath)/%(_PapNupkg.RelativeSourcePath)/**" />
+      <FileWrites Include="@(_NuGetAddOutput)" />
+    </ItemGroup>
+    -->
+  </Target>
+
+  <Target Name="_GeneratePapFiles"
+          Inputs="$(MSBuildAllProjects)"
+          Outputs="$(_PapPropsFilePath)"
+          DependsOnTargets="_CollectPapReferences">
+
+    <Message Text="_GeneratePapFiles with _PapReferences: @(_PapReference)" Importance="high" />
+    
+    <PropertyGroup>
+      <_PapPropsFileContent>
+<![CDATA[
+<Project>
+  <ItemGroup>
+    ]]>@(_PapReference->'&lt;PackageReference Include="%(PackageId)" Version="%(PackageVersion)" /&gt;', '&#xD;&#xA;    ')<![CDATA[
+  </ItemGroup>
+</Project>
+]]>
+      </_PapPropsFileContent>
+    </PropertyGroup>
+
+    <WriteLinesToFile File="$(_PapPropsFilePath)" Lines="$(_PapPropsFileContent)" Overwrite="true" />
+
+    <ItemGroup>
+      <FileWrites Include="$(_PapPropsFilePath)" />
+    </ItemGroup>
+
+  </Target>
+  
+</Project>

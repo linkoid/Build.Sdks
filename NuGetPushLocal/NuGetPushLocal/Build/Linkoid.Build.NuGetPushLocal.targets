@@ -1,0 +1,35 @@
+﻿<Project>
+
+  <PropertyGroup Condition="'$(NuGetDeleteLocalOnClean)' == ''">
+    <NuGetDeleteLocalOnClean Condition="'$(GeneratePackageOnBuild)' == 'true'">true</NuGetDeleteLocalOnClean>
+    <NuGetDeleteLocalOnClean Condition="'$(GeneratePackageOnBuild)' != 'true'">false</NuGetDeleteLocalOnClean>
+  </PropertyGroup>
+  
+  <Target Name="_NuGetPushLocalAsPackAfterTarget"
+          Condition="'$(NuGetPushLocalOnPack)' == 'true' and '$(IsInnerBuild)' != 'true'"
+          AfterTargets="Pack"
+          DependsOnTargets="NuGetPushLocal">
+  </Target>
+
+  <Target Name="_NuGetDeleteLocalAsCleanAfterTarget"
+        Condition="'$(NuGetDeleteLocalOnClean)' == 'true' and '$(IsInnerBuild)' != 'true'"
+        AfterTargets="Clean"
+        DependsOnTargets="NuGetDeleteLocal">
+  </Target>
+  
+  <Target Name="NuGetPushLocal"
+          Inputs="@(NuGetPackOutput->WithMetadataValue('Extension', '.nupkg'))"
+          Outputs="@(NuGetPackOutput->WithMetadataValue('Extension', '.nupkg')->'$(NuGetPushLocalFeed)/$(PackageId)/$(PackageVersion)/%(Filename)%(Extension)')"
+          DependsOnTargets="Pack">
+    <ItemGroup>
+      <_NupkgOutput Include="@(NuGetPackOutput->WithMetadataValue('Extension', '.nupkg'))" />
+    </ItemGroup>
+    <Exec Command="nuget delete $(PackageId) $(PackageVersion) -Source $(NuGetPushLocalFeed) -NonInteractive" ContinueOnError="true" />
+    <Exec Command="nuget add %(_NupkgOutput.FullPath) -Source $(NuGetPushLocalFeed) -Expand -NonInteractive" />
+  </Target>
+  
+  <Target Name="NuGetDeleteLocal">
+    <Exec Command="nuget delete $(PackageId) $(PackageVersion) -Source $(NuGetPushLocalFeed) -NonInteractive" ContinueOnError="true" />
+  </Target>
+
+</Project>

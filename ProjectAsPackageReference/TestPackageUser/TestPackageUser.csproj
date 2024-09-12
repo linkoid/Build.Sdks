@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Linkoid.Build.ProjectAsPackageReference" Version="1.0.0"/>
+  
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectAsPackageReference Include="../TestPackage/TestPackage.csproj" />
+    <ProjectAsPackageReference Include="../TestPackage2/TestPackage2.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+﻿<Project>
+  <Import Project="Debug.props"/>
+
+  <PropertyGroup>
+    <_PapPropsFileName>$(MSBuildProjectFile).pap.g.props</_PapPropsFileName>
+    <_PapTargetsFileName>$(MSBuildProjectFile).pap.g.targets</_PapTargetsFileName>
+    <_PapPropsFilePath>$([MSBuild]::EnsureTrailingSlash($([MSBuild]::EnsureTrailingSlash($(MSBuildProjectDirectory)))$(BaseIntermediateOutputPath)))$(_PapPropsFileName)</_PapPropsFilePath>
+    <_PapTargetsFilePath>$([MSBuild]::EnsureTrailingSlash($([MSBuild]::EnsureTrailingSlash($(MSBuildProjectDirectory)))$(BaseIntermediateOutputPath)))$(_PapTargetsFileName)</_PapTargetsFilePath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--<RestorePackagesPath>$(BaseIntermediateOutputPath)packages</RestorePackagesPath>-->
+    <_PapRestorePath Condition="'$(RestorePackagesPath)' != ''">$(RestorePackagesPath)</_PapRestorePath>
+    <_PapRestorePath Condition="'$(_PapRestorePath)' == '' and '$(NuGetPackageRoot)' != ''">$(NuGetPackageRoot)</_PapRestorePath>
+    <_PapRestorePath Condition="'$(_PapRestorePath)' == '' and '$(NuGetPackageRoot)' != ''">$(NuGetPackageRoot)</_PapRestorePath>
+    <_PapRestorePath Condition="'$(_PapRestorePath)' != ''">$([MSBuild]::EnsureTrailingSlash($(_PapRestorePath)))</_PapRestorePath>
+  </PropertyGroup>
+
+  <!--<Import Project="$(_PapPropsFilePath)" Condition="Exists($(_PapPropsFilePath))" />-->
+  
+</Project>

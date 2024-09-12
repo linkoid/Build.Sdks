@@ -1,0 +1,96 @@
+﻿<Project>
+  <Target Name="_GetPapReferenceWithPackageInfo"
+          DependsOnTargets="_GetOutputItemsFromPack"
+          Returns="@(_PapReferenceWithPackageInfo)">
+    <PropertyGroup>
+      <_PapPackageVersion Condition="'$(PackageVersion)' != ''">$(PackageVersion)</_PapPackageVersion>
+      <_PapPackageVersion Condition="'$(PackageVersion)' == ''">1.0.0</_PapPackageVersion>
+    </PropertyGroup>
+    <ItemGroup>
+      <_PapReferenceWithPackageInfo Include="$(MSBuildProjectFullPath)">
+        <PackageId>$(PackageId)</PackageId>
+        <PackageVersion>$(_PapPackageVersion)</PackageVersion>
+        <NupkgFullPath>@(_OutputPackItems->WithMetadataValue('Extension', '.nupkg')->Metadata('FullPath'))</NupkgFullPath>
+        <NupkgFilename>@(_OutputPackItems->WithMetadataValue('Extension', '.nupkg')->Metadata('Filename'))</NupkgFilename>
+        <NupkgExtension>@(_OutputPackItems->WithMetadataValue('Extension', '.nupkg')->Metadata('Extension'))</NupkgExtension>
+        <NuspecFullPath>@(_OutputPackItems->WithMetadataValue('Extension', '.nuspec')->Metadata('FullPath'))</NuspecFullPath>
+        <NuspecFilename>@(_OutputPackItems->WithMetadataValue('Extension', '.nuspec')->Metadata('Filename'))</NuspecFilename>
+        <NuspecExtension>@(_OutputPackItems->WithMetadataValue('Extension', '.nuspec')->Metadata('Extension'))</NuspecExtension>
+        <RelativeSourcePath>$([MSBuild]::EnsureTrailingSlash(  $([System.IO.Path]::Combine( $(PackageId), $(_PapPackageVersion) ))  ))</RelativeSourcePath>
+      </_PapReferenceWithPackageInfo>
+    </ItemGroup>
+  </Target>
+
+  <!--<Target Name="GenerateNupkg"
+          Condition="'$(IsPackable)' == 'true'"
+          Inputs="@(NuGetPackInput)" Outputs="@(NuGetPackOutput->WithMetadataValue('Extension', '.nupkg'))"
+          DependsOnTargets="$(GenerateNuspecDependsOn);_CalculateInputsOutputsForPack;_GetProjectReferenceVersions;_InitializeNuspecRepositoryInformationProperties">
+
+    <ConvertToAbsolutePath Condition="$(NuspecFile) != ''" Paths="$(NuspecFile)">
+      <Output TaskParameter="AbsolutePaths" PropertyName="NuspecFileAbsolutePath" />
+    </ConvertToAbsolutePath>
+
+    <PackTask PackItem="$(PackProjectInputFile)"
+              PackageFiles="@(_PackageFiles)"
+              PackageFilesToExclude="@(_PackageFilesToExclude)"
+              PackageVersion="$(PackageVersion)"
+              PackageId="$(PackageId)"
+              Title="$(Title)"
+              Authors="$(Authors)"
+              Description="$(PackageDescription)"
+              Copyright="$(Copyright)"
+              RequireLicenseAcceptance="$(PackageRequireLicenseAcceptance)"
+              LicenseUrl="$(PackageLicenseUrl)"
+              ProjectUrl="$(PackageProjectUrl)"
+              IconUrl="$(PackageIconUrl)"
+              ReleaseNotes="$(PackageReleaseNotes)"
+              Tags="$(PackageTags)"
+              DevelopmentDependency="$(DevelopmentDependency)"
+              BuildOutputInPackage="@(_BuildOutputInPackage)"
+              ProjectReferencesWithVersions="@(_ProjectReferencesWithVersions)"
+              TargetPathsToSymbols="@(_TargetPathsToSymbols)"
+              TargetFrameworks="@(_TargetFrameworks)"
+              FrameworksWithSuppressedDependencies="@(_FrameworksWithSuppressedDependencies)"
+              AssemblyName="$(AssemblyName)"
+              PackageOutputPath="$(PackageOutputAbsolutePath)"
+              IncludeSymbols="$(IncludeSymbols)"
+              IncludeSource="$(IncludeSource)"
+              PackageTypes="$(PackageType)"
+              IsTool="$(IsTool)"
+              RepositoryUrl="$(RepositoryUrl)"
+              RepositoryType="$(RepositoryType)"
+              RepositoryBranch="$(RepositoryBranch)"
+              RepositoryCommit="$(RepositoryCommit)"
+              SourceFiles="@(_SourceFiles->Distinct())"
+              NoPackageAnalysis="$(NoPackageAnalysis)"
+              NoDefaultExcludes="$(NoDefaultExcludes)"
+              MinClientVersion="$(MinClientVersion)"
+              Serviceable="$(Serviceable)"
+              FrameworkAssemblyReferences="@(_FrameworkAssemblyReferences)"
+              ContinuePackingAfterGeneratingNuspec="$(ContinuePackingAfterGeneratingNuspec)"
+              NuspecOutputPath="$(NuspecOutputAbsolutePath)"
+              IncludeBuildOutput="$(IncludeBuildOutput)"
+              BuildOutputFolders="$(BuildOutputTargetFolder)"
+              ContentTargetFolders="$(ContentTargetFolders)"
+              RestoreOutputPath="$(RestoreOutputAbsolutePath)"
+              NuspecFile="$(NuspecFileAbsolutePath)"
+              NuspecBasePath="$(NuspecBasePath)"
+              NuspecProperties="$(NuspecProperties)"
+              AllowedOutputExtensionsInPackageBuildOutputFolder="$(AllowedOutputExtensionsInPackageBuildOutputFolder)"
+              AllowedOutputExtensionsInSymbolsPackageBuildOutputFolder="$(AllowedOutputExtensionsInSymbolsPackageBuildOutputFolder)"
+              NoWarn="$(NoWarn)"
+              WarningsAsErrors="$(WarningsAsErrors)"
+              WarningsNotAsErrors="$(WarningsNotAsErrors)"
+              TreatWarningsAsErrors="$(TreatWarningsAsErrors)"
+              OutputFileNamesWithoutVersion="$(OutputFileNamesWithoutVersion)"
+              InstallPackageToOutputPath="$(InstallPackageToOutputPath)"
+              SymbolPackageFormat="$(SymbolPackageFormat)"
+              PackageLicenseFile="$(PackageLicenseFile)"
+              PackageLicenseExpression="$(PackageLicenseExpression)"
+              PackageLicenseExpressionVersion="$(PackageLicenseExpressionVersion)"
+              Readme="$(PackageReadmeFile)"
+              Deterministic="$(Deterministic)"
+              PackageIcon="$(PackageIcon)"
+              />
+  </Target>-->
+</Project>
