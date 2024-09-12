@@ -5,6 +5,7 @@
     <RootNamespace>Linkoid.Build.ProjectAsPackageReference</RootNamespace>
     <IsPackable>true</IsPackable>
     <PackageType>MSBuildSdk</PackageType>
+    <Description>Allows using a project as a package reference.</Description>
   </PropertyGroup>
 
   <ItemGroup>

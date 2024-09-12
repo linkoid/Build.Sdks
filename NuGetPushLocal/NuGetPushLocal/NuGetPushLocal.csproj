@@ -4,6 +4,7 @@
   
   <PropertyGroup>
     <IsPackable>true</IsPackable>
+    <Description>Pushes a package to the local feed on pack.</Description>
   </PropertyGroup>
   
   <Import Project="Build/Linkoid.Build.NuGetPushLocal.targets" />
