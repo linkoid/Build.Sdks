@@ -25,7 +25,7 @@
       RunSettingsFile="@(_RunSettingsFile)"
       Elements="@(RunSettingElements)"
       Attributes="@(RunSettingAttributes)"
-      Condition="'@(RunSettingAttributes)' != ''" />
+      Condition="'@(RunSettingAttributes)' != '' or '@(RunSettingElements)' != ''" />
     
     <Copy SourceFiles="@(_RunSettingsFile)"
           DestinationFiles="@(_RunSettingsFileCache)"
