@@ -1,13 +1,16 @@
 ﻿<Project>
+  
+  <PropertyGroup>
+    <RunSettingsFilePath Condition="'$(RunSettingsFilePath)' == ''">$([MSBuild]::NormalizePath($(MSBuildProjectDirectory), .runsettings))</RunSettingsFilePath>
+  </PropertyGroup>
 
   <Target Name="_GetRunSettingsFile"
           Returns="@(_RunSettingsFile)">
     <ItemGroup>
-      <_RunSettingsFile Include="$(RunSettingsFilePath)" Condition="'$(RunSettingsFilePath)' != ''"/>
-      <_RunSettingsFile Include=".runsettings" Condition="'$(RunSettingsFilePath)' == ''"/>
+      <_RunSettingsFile Include="$(RunSettingsFilePath)" />
     </ItemGroup>
     <ItemGroup>
-      <_RunSettingsFileCache Include="@(_RunSettingsFile->'$(IntermediatePath)%(Filename)%(Extension)')" Condition="'@(_RunSettingsFile)' != ''"/>
+      <_RunSettingsFileCache Include="@(_RunSettingsFile->'$(IntermediatePath)%(Filename)%(Extension)')" Condition="'@(_RunSettingsFile)' != ''" />
     </ItemGroup>
   </Target>
 
