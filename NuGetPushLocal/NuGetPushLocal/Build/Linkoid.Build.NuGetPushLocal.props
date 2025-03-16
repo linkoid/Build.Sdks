@@ -1,9 +1,9 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <NuGetPushLocalFeed>$(NuGetPackageRoot)</NuGetPushLocalFeed>
-    <NuGetPushLocalOnPack>true</NuGetPushLocalOnPack>
-    <NuGetDeleteLocalOnClean></NuGetDeleteLocalOnClean>
+    <NuGetPushLocalFeed Condition="'$(NuGetPushLocalFeed)' == ''">$(NuGetPackageRoot)</NuGetPushLocalFeed>
+    <NuGetPushLocalOnPack Condition="'$(NuGetPushLocalOnPack)' == ''">true</NuGetPushLocalOnPack>
+    <NuGetDeleteLocalOnClean Condition="'$(NuGetDeleteLocalOnClean)' == ''"></NuGetDeleteLocalOnClean>
   </PropertyGroup>
   
 </Project>
