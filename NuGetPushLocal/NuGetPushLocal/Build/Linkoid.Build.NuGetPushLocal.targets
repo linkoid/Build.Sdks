@@ -24,12 +24,23 @@
     <ItemGroup>
       <_NupkgOutput Include="@(NuGetPackOutput->WithMetadataValue('Extension', '.nupkg'))" />
     </ItemGroup>
-    <Exec Command="nuget delete $(PackageId) $(PackageVersion) -Source $(NuGetPushLocalFeed) -NonInteractive" ContinueOnError="true" />
-    <Exec Command="nuget add %(_NupkgOutput.FullPath) -Source $(NuGetPushLocalFeed) -Expand -NonInteractive" />
+
+    <Exec Condition="'$(NuGetPushLocalUseNugetCli)' != 'true'"
+          Command="dotnet nuget delete $(PackageId) $(PackageVersion) --source $(NuGetPushLocalFeed) --non-interactive" ContinueOnError="true" />
+    <Exec Condition="'$(NuGetPushLocalUseNugetCli)' != 'true'"
+          Command="dotnet nuget push %(_NupkgOutput.FullPath) --source $(NuGetPushLocalFeed)" />
+
+    <Exec Condition="'$(NuGetPushLocalUseNugetCli)' == 'true'"
+          Command="nuget delete $(PackageId) $(PackageVersion) -Source $(NuGetPushLocalFeed) -NonInteractive" ContinueOnError="true" />
+    <Exec Condition="'$(NuGetPushLocalUseNugetCli)' == 'true'"
+          Command="nuget add %(_NupkgOutput.FullPath) -Source $(NuGetPushLocalFeed) -Expand -NonInteractive" />
   </Target>
-  
+
   <Target Name="NuGetDeleteLocal">
-    <Exec Command="nuget delete $(PackageId) $(PackageVersion) -Source $(NuGetPushLocalFeed) -NonInteractive" ContinueOnError="true" />
+    <Exec Condition="'$(NuGetPushLocalUseNugetCli)' != 'true'"
+          Command="dotnet nuget delete $(PackageId) $(PackageVersion) --source $(NuGetPushLocalFeed) --non-interactive" ContinueOnError="true" />
+    <Exec Condition="'$(NuGetPushLocalUseNugetCli)' == 'true'"
+          Command="nuget delete $(PackageId) $(PackageVersion) -Source $(NuGetPushLocalFeed) -NonInteractive" ContinueOnError="true" />
   </Target>
 
 </Project>

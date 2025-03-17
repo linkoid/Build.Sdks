@@ -4,6 +4,7 @@
     <NuGetPushLocalFeed Condition="'$(NuGetPushLocalFeed)' == ''">$(NuGetPackageRoot)</NuGetPushLocalFeed>
     <NuGetPushLocalOnPack Condition="'$(NuGetPushLocalOnPack)' == ''">true</NuGetPushLocalOnPack>
     <NuGetDeleteLocalOnClean Condition="'$(NuGetDeleteLocalOnClean)' == ''"></NuGetDeleteLocalOnClean>
+    <NuGetPushLocalUseNugetCli Condition="'$(NuGetPushLocalUseNugetCli)' == ''">false</NuGetPushLocalUseNugetCli>
   </PropertyGroup>
   
 </Project>
